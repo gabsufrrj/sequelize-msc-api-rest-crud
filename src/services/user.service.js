@@ -12,6 +12,13 @@ const findOne = async (email) => {
   return result;
 };
 
+const findByPk = async (id) => {
+  const result = await User.findByPk(id, {
+    attributes: { exclude: 'password' },
+  }); 
+  return result;
+};
+
 const create = async (displayName, email, password, image) => {
   const result = await User.create({ displayName, email, password, image });
   return result;
@@ -21,4 +28,5 @@ module.exports = {
   findAll,
   create,
   findOne,
+  findByPk,
 };

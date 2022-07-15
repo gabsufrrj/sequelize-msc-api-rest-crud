@@ -20,6 +20,17 @@ const findOne = async (req, res) => {
   }
 };
 
+const findByPk = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.findByPk(id);
+    if (!user) return res.status(404).json({ message: 'User does not exist' });
+    return res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+};
+
 const create = async (req, res) => {
   try {
     const { displayName, email, password, image } = req.body;
@@ -35,4 +46,5 @@ module.exports = {
   findAll,
   create,
   findOne,
+  findByPk,
 };
