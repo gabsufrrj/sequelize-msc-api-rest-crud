@@ -11,8 +11,7 @@ const secret = process.env.JWT_SECRET;
 const createToken = (user) => {
   const payload = {
     id: user.id,
-    email: user.email,
-    password: user.password,
+    email: user.email,   
   };
 
   const token = jwt.sign({ data: payload }, secret, jwtConfig);
