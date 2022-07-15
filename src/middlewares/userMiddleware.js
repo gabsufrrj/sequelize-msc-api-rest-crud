@@ -1,4 +1,6 @@
-const userMiddleware = (req, res, next) => {
+const userService = require('../services/user.service');
+
+const userMiddleware = async (req, res, next) => {
   const { displayName, email, password } = req.body;
   const regexEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
   if (displayName.length < 8) {
@@ -14,7 +16,21 @@ const userMiddleware = (req, res, next) => {
       { message: '"password" length must be at least 6 characters long' },
     );
   }
+  
   next();
 };
 
-module.exports = userMiddleware;
+const emailMiddleware = async (req, res, next) => {
+  const { email } = req.body;
+
+  const allUsers = await userService.findAll();
+
+  if (allUsers.some((e) => e.email === email)) {
+    return res.status(409).json(
+      { message: 'User already registered' },
+    );
+  }
+  next();
+};
+
+module.exports = { userMiddleware, emailMiddleware };
