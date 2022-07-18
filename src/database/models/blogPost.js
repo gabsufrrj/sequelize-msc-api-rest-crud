@@ -1,3 +1,5 @@
+const { Sequelize } = require(".");
+
 const BlogPost = (sequelize, DataTypes) => {
   const BlogPost = sequelize.define("BlogPost", {
     id: {
@@ -11,8 +13,14 @@ const BlogPost = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       foreingKey: true,      
     },
-    published: DataTypes.DATE,
-    updated: DataTypes.DATE,
+    published: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
+    updated: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW
+    },
   },
   {
     timestamps: false,
