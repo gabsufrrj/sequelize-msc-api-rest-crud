@@ -1,5 +1,3 @@
-const { Sequelize } = require(".");
-
 const BlogPost = (sequelize, DataTypes) => {
   const BlogPost = sequelize.define("BlogPost", {
     id: {
