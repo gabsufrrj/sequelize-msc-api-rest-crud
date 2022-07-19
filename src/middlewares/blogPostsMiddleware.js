@@ -1,4 +1,10 @@
+const jwt = require('jsonwebtoken');
+
 const categoriesService = require('../services/category.service');
+const blogPostService = require('../services/blogpost.service');
+require('dotenv').config();
+
+const secret = process.env.JWT_SECRET;
 
 const blogPostMiddleware = async (req, res, next) => {
   const { title, content, categoryIds } = req.body;
@@ -17,12 +23,21 @@ const blogPostMiddleware = async (req, res, next) => {
 };
 
 const updateMiddleware = async (req, res, next) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { data } = jwt.verify(token, secret);    
+  const loggedUser = await blogPostService.findByPk(id);
+
+  if (loggedUser.userId !== data.id) {
+    return res.status(401).json({ message: 'Unauthorized user' });
+  }
+
   const { title, content } = req.body;
 
   if (!title || !content) {
     return res.status(400).json({ message: 'Some required fields are missing' });
   }
-  
+
   next();
 };
 

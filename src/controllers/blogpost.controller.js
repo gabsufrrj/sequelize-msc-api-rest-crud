@@ -1,8 +1,4 @@
-const jwt = require('jsonwebtoken');
 const blogPostService = require('../services/blogpost.service');
-require('dotenv').config();
-
-const secret = process.env.JWT_SECRET;
 
 const create = async (req, res) => {
   try {
@@ -42,15 +38,7 @@ const findByPk = async (req, res) => {
 
 const update = async (req, res) => {
   try {
-    const { id } = req.params;
-    const token = req.headers.authorization;
-    const { data } = jwt.verify(token, secret);    
-    const loggedUser = await blogPostService.findByPk(id);
-
-    if (loggedUser.userId !== data.id) {
-      return res.status(401).json({ message: 'Unauthorized user' });
-    }
-
+    const { id } = req.params;    
     const { title, content } = req.body;
     const result = await blogPostService.update(id, title, content);
     return res.status(200).json(result);
