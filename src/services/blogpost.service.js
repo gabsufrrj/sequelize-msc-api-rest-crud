@@ -10,30 +10,49 @@ const create = async (token, title, content, categoryIds) => {
     title,
     content,
     userId: data.id,
-  };  
+  };
   const result = await BlogPost.create(object);
   const addPostCategory = categoryIds.map((id) => ({ categoryId: id, postId: result.id }));
-  console.log(addPostCategory);
   await Promise.all(addPostCategory.map((e) => PostCategory.create(e)));
-  return result; 
+  return result;
 };
 
 const findAll = async () => {
   const result = await BlogPost.findAll({
     include: [
       { model: User, as: 'user', attributes: { exclude: ['password'] } },
-      { model: Category, 
-        as: 'categories', 
+      {
+        model: Category,
+        as: 'categories',
         through: {
-        attributes: [],
+          attributes: [],
+        },
       },
-    },
     ],
   });
   return result;
 };
 
-module.exports = { 
+const findByPk = async (id) => {
+  const result = await BlogPost.findByPk(id, {
+    include: [
+      { model: User, 
+        as: 'user', 
+        attributes: { exclude: ['password'] } },
+      {
+        model: Category,
+        as: 'categories',
+        through: {
+          attributes: [],
+        },
+      },
+  ],
+  });
+  return result;
+};
+
+module.exports = {
   create,
   findAll,
+  findByPk,
 };

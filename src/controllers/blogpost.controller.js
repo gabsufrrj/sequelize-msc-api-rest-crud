@@ -22,7 +22,22 @@ const findAll = async (_req, res) => {
   }  
 };
 
+const findByPk = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await blogPostService.findByPk(id);
+    if (!result) {
+      return res.status(404).json({ message: 'Post does not exist' });
+    }
+    return res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }  
+};
+
 module.exports = {
   create,
   findAll,
+  findByPk,
 };
