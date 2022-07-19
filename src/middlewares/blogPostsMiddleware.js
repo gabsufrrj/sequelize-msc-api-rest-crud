@@ -1,6 +1,6 @@
 const categoriesService = require('../services/category.service');
 
-const loginMiddleware = async (req, res, next) => {
+const blogPostMiddleware = async (req, res, next) => {
   const { title, content, categoryIds } = req.body;
   const allCategories = await categoriesService.findAll();
 
@@ -16,4 +16,17 @@ const loginMiddleware = async (req, res, next) => {
   next();
 };
 
-module.exports = loginMiddleware;
+const updateMiddleware = async (req, res, next) => {
+  const { title, content } = req.body;
+
+  if (!title || !content) {
+    return res.status(400).json({ message: 'Some required fields are missing' });
+  }
+  
+  next();
+};
+
+module.exports = {
+  blogPostMiddleware,
+  updateMiddleware,
+};

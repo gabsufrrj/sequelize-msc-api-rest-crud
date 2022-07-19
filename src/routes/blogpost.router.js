@@ -5,10 +5,12 @@ const blogPostsMiddleware = require('../middlewares/blogPostsMiddleware');
 
 const router = express.Router();
 
-router.post('/', validateJWT, blogPostsMiddleware, blogPostController.create);
+router.post('/', validateJWT, blogPostsMiddleware.blogPostMiddleware, blogPostController.create);
 
 router.get('/', validateJWT, blogPostController.findAll);
 
 router.get('/:id', validateJWT, blogPostController.findByPk);
+
+router.put('/:id', validateJWT, blogPostsMiddleware.updateMiddleware, blogPostController.update);
 
 module.exports = router;

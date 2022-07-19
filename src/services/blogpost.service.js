@@ -51,8 +51,18 @@ const findByPk = async (id) => {
   return result;
 };
 
+const update = async (id, title, content) => {  
+  await BlogPost.update( 
+    { title, content },
+    { where: { id } }, 
+  );
+  const result = await findByPk(id);  
+  return result;
+};
+
 module.exports = {
   create,
   findAll,
   findByPk,
+  update,
 };
