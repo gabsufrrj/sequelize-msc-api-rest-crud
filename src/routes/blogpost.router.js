@@ -13,4 +13,9 @@ router.get('/:id', validateJWT, blogPostController.findByPk);
 
 router.put('/:id', validateJWT, blogPostsMiddleware.updateMiddleware, blogPostController.update);
 
+router.delete('/:id', 
+validateJWT,
+blogPostsMiddleware.deleteMiddleware, 
+blogPostController.destroy);
+
 module.exports = router;

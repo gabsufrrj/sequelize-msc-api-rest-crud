@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const categoriesService = require('../services/category.service');
 const blogPostService = require('../services/blogpost.service');
 require('dotenv').config();
@@ -41,7 +40,25 @@ const updateMiddleware = async (req, res, next) => {
   next();
 };
 
+const deleteMiddleware = async (req, res, next) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+  const { data } = jwt.verify(token, secret);    
+  const loggedUser = await blogPostService.findByPk(id);  
+
+  if (!loggedUser) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
+
+  if (loggedUser.userId !== data.id) {
+    return res.status(401).json({ message: 'Unauthorized user' });
+  }   
+
+  next();
+};
+
 module.exports = {
   blogPostMiddleware,
   updateMiddleware,
+  deleteMiddleware,
 };

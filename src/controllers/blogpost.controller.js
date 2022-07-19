@@ -48,9 +48,22 @@ const update = async (req, res) => {
   }
 };
 
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;    
+    await blogPostService.destroy(id);
+    // if (!result) return res.status(404).json({ message: 'Post does not exist' });
+    return res.status(204).end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
 module.exports = {
   create,
   findAll,
   findByPk,
   update,
+  destroy,
 };
