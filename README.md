@@ -8,11 +8,18 @@ Para a gestão de dados foi utilizado o sistema MySQL.
 
 ## Tecnologias
 
+
 Node.js
+
 Express
+
 Sequelize
+
 MySQL
+
 Swagger
+
+
 
 ## Como executar
 1. Clone o projeto e acesse a pasta do mesmo.
