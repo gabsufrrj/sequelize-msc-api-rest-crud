@@ -1,4 +1,6 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerFile = require('../swagger_output.json');
 const userRouter = require('./routes/user.router');
 const loginRouter = require('./routes/login.router');
 const categoryRouter = require('./routes/category.router');
@@ -17,6 +19,8 @@ app.use('/login', loginRouter);
 app.use('/categories', categoryRouter);
 
 app.use('/post', blogPostRouter);
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // ...
 
