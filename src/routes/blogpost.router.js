@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post('/', validateJWT, blogPostsMiddleware.blogPostMiddleware, blogPostController.create);
 
+router.get('/search', validateJWT, blogPostController.searchQuery);
+
 router.get('/', validateJWT, blogPostController.findAll);
 
 router.get('/:id', validateJWT, blogPostController.findByPk);

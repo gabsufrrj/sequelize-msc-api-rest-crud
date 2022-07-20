@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');  
 const jwt = require('jsonwebtoken');
 const { BlogPost, PostCategory, User, Category } = require('../database/models');
 require('dotenv').config();
@@ -65,10 +66,33 @@ const destroy = async (id) => {
   return result;
 };
 
+// retirado de https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
+
+const searchQuery = async (q) => {
+  const result = await BlogPost.findAll({ where: {
+      [Op.or]: [
+        { title: q },
+        { content: q },
+      ],
+    },      
+    include: [
+      { model: User, 
+        as: 'user', 
+        attributes: { exclude: ['password'] } },
+      {
+        model: Category,
+        as: 'categories',
+        through: {
+          attributes: [],
+        } }] });
+  return result;
+};
+
 module.exports = {
   create,
   findAll,
   findByPk,
   update,
   destroy,
+  searchQuery,
 };

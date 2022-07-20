@@ -52,8 +52,22 @@ const destroy = async (req, res) => {
   try {
     const { id } = req.params;    
     await blogPostService.destroy(id);
-    // if (!result) return res.status(404).json({ message: 'Post does not exist' });
     return res.status(204).end();
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
+};
+
+const searchQuery = async (req, res) => {
+  try {
+    const { q } = req.query;
+    if (q === '') {
+      const result = await blogPostService.findAll();
+      return res.status(200).json(result);
+    }
+    const result = await blogPostService.searchQuery(q);
+    res.status(200).json(result);
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err });
@@ -66,4 +80,5 @@ module.exports = {
   findByPk,
   update,
   destroy,
+  searchQuery,
 };
