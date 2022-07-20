@@ -1,4 +1,8 @@
+const jwt = require('jsonwebtoken');
 const { User } = require('../database/models');
+require('dotenv').config();
+
+const secret = process.env.JWT_SECRET;
 
 const findAll = async () => {
   const result = await User.findAll({
@@ -24,9 +28,19 @@ const create = async (displayName, email, password, image) => {
   return result;
 };
 
+const destroy = async (token) => {
+  const { data } = jwt.verify(token, secret);
+  const foundUser = await findByPk(data.id);
+  console.log(foundUser);
+  const { id } = foundUser;
+  const result = await User.destroy({ where: { id } });
+  return result;
+};
+
 module.exports = {
   findAll,
   create,
   findOne,
   findByPk,
+  destroy,
 };

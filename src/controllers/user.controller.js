@@ -42,9 +42,20 @@ const create = async (req, res) => {
   }  
 };
 
+const destroy = async (req, res) => {
+  try {
+    const token = req.headers.authorization;   
+    await userService.destroy(token);
+    res.status(204).end();
+  } catch (err) {
+    res.status(500).json({ error: err });
+  } 
+};
+
 module.exports = {
   findAll,
   create,
   findOne,
   findByPk,
+  destroy,
 };
