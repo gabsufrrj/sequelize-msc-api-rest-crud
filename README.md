@@ -19,6 +19,8 @@ MySQL
 
 Swagger
 
+JWT
+
 
 
 ## Como executar
